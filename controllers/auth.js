@@ -30,6 +30,8 @@ const crearUsuario = async (req, res = response) => {
       ok: true,
       uid: usuario.id,
       name: usuario.name,
+      surnames: usuario.surnames,
+      gender: usuario.gender,
       token,
     });
   } catch (error) {
@@ -71,6 +73,8 @@ const loginUsuario = async (req, res = response) => {
       ok: true,
       uid: usuario.id,
       name: usuario.name,
+      surnames: usuario.surnames,
+      gender: usuario.gender,
       token,
     });
   } catch (error) {
@@ -88,6 +92,8 @@ const revalidarToken = async (req, res = response) => {
 
   res.json({
     ok: true,
+    uid,
+    name,
     token,
   });
 };
