@@ -17,10 +17,20 @@ const getReservas = async (req, res = response) => {
 const crearReserva = async (req, res = response) => {
   const reservation = new Reservation(req.body);
 
+  console.log(reservation);
   try {
     //validar usuario y empresa
     reservation.user = req.uid;
     reservation.empresa = req.body.empresa;
+
+    const validationReservation = await Reservation.findOne({ fecha: req.body.fecha });
+
+    if (validationReservation !== null) {
+      return res.status(404).json({
+        ok: false,
+        msg: "Ya hay una reserva para esa fecha",
+      });
+    }
 
     await reservation.save();
 
