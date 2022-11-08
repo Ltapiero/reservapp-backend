@@ -5,6 +5,11 @@ const EmpresaSchema = Schema({
     type: String,
     require: true,
   },
+
+  logo: {
+    type: String,
+    require: true,
+  },
 });
 
 module.exports = model("Empresa", EmpresaSchema);

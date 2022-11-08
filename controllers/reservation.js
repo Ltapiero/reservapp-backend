@@ -5,7 +5,7 @@ const Empresa = require("../models/Empresa");
 const getReservas = async (req, res = response) => {
   const reservas = await Reservation.find({ user: req.uid })
     .populate("user", "name")
-    .populate("empresa", "name");
+    .populate("empresa", "name logo");
   // const reservas = await Reservation.find({ user: req.uid }).populate("user", "name");
 
   res.json({
@@ -17,7 +17,6 @@ const getReservas = async (req, res = response) => {
 const crearReserva = async (req, res = response) => {
   const reservation = new Reservation(req.body);
 
-  console.log(reservation);
   try {
     //validar usuario y empresa
     reservation.user = req.uid;
@@ -57,7 +56,6 @@ const actualizarReserva = (req, res = response) => {
 const eliminarReserva = async (req, res = response) => {
   const reservaId = req.params.id;
   const uid = req.uid;
-  console.log(req);
 
   try {
     const reserva = await Reservation.findById(reservaId);

@@ -44,6 +44,7 @@ const crearUsuario = async (req, res = response) => {
 
 const loginUsuario = async (req, res = response) => {
   const { email, password } = req.body;
+  console.log(req);
 
   try {
     let usuario = await Usuario.findOne({ email });
@@ -88,12 +89,16 @@ const loginUsuario = async (req, res = response) => {
 const revalidarToken = async (req, res = response) => {
   const { uid, name } = req;
 
+  let usuario = await Usuario.findOne({ uid });
+
   const token = await generarJWT(uid, name);
 
   res.json({
     ok: true,
-    uid,
-    name,
+    uid: usuario.id,
+    name: usuario.name,
+    surnames: usuario.surnames,
+    gender: usuario.gender,
     token,
   });
 };
