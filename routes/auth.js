@@ -3,7 +3,12 @@
 
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { crearUsuario, loginUsuario, revalidarToken } = require("../controllers/auth");
+const {
+  crearUsuario,
+  loginUsuario,
+  revalidarToken,
+  editarUsuario,
+} = require("../controllers/auth");
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
 const router = Router();
@@ -18,6 +23,14 @@ router.post(
   ],
   crearUsuario
 );
+
+router.put("/", [
+  check("name", "El nombre es obligatorio").not().isEmpty(),
+  check("password", "El password debe de tener mínimo 6 caracteres").isLength({ min: 6 }),
+  validarCampos,
+  validarJWT,
+  editarUsuario,
+]);
 
 router.post(
   "/",

@@ -42,6 +42,50 @@ const crearUsuario = async (req, res = response) => {
   }
 };
 
+const editarUsuario = async (req, res = response) => {
+  const usuarioId = req.body.uid;
+  const uid = req.uid;
+
+  console.log(req);
+
+  try {
+    const usuario = await Usuario.findById(usuarioId);
+
+    if (!usuario) {
+      res.status(404).json({
+        ok: false,
+        msg: "No existe ese usuario por ese id",
+      });
+    }
+
+    if (usuario._id.toString() !== uid) {
+      return res.status(401).json({
+        ok: false,
+        msg: "No tiene privilegio de editar",
+      });
+    }
+
+    const usuarioEditado = {
+      ...req.body,
+    };
+
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(usuarioId, usuarioEditado, {
+      new: true,
+    });
+
+    res.json({
+      ok: true,
+      usuario: usuarioActualizado,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "hable con el administrador",
+    });
+  }
+};
+
 const loginUsuario = async (req, res = response) => {
   const { email, password } = req.body;
   console.log(req);
@@ -107,4 +151,5 @@ module.exports = {
   crearUsuario,
   loginUsuario,
   revalidarToken,
+  editarUsuario,
 };

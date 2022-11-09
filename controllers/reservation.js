@@ -1,6 +1,5 @@
 const { response } = require("express");
 const Reservation = require("../models/Reservation");
-const Empresa = require("../models/Empresa");
 
 const getReservas = async (req, res = response) => {
   const reservas = await Reservation.find({ user: req.uid })
@@ -22,7 +21,10 @@ const crearReserva = async (req, res = response) => {
     reservation.user = req.uid;
     reservation.empresa = req.body.empresa;
 
-    const validationReservation = await Reservation.findOne({ fecha: req.body.fecha });
+    const validationReservation = await Reservation.findOne({
+      fecha: req.body.fecha,
+      empresa: req.body.empresa,
+    });
 
     if (validationReservation !== null) {
       return res.status(404).json({
