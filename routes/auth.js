@@ -26,7 +26,7 @@ router.post(
 
 router.put("/", [
   check("name", "El nombre es obligatorio").not().isEmpty(),
-  check("name", "El nombre es obligatorio").not().isEmpty(),
+  check("surnames", "El apellido es obligatorio").not().isEmpty(),
   validarCampos,
   validarJWT,
   editarUsuario,

@@ -47,8 +47,6 @@ const editarUsuario = async (req, res = response) => {
   const { password } = req.body;
   const uid = req.uid;
 
-  console.log(req);
-
   try {
     let usuario = await Usuario.findById(usuarioId);
 
@@ -152,11 +150,11 @@ const loginUsuario = async (req, res = response) => {
 
 const revalidarToken = async (req, res = response) => {
   const { uid, name } = req;
+  console.log(uid, name);
 
-  let usuario = await Usuario.findOne({ uid });
-
+  let usuario = await Usuario.findOne({ _id: uid });
+  console.log(usuario);
   const token = await generarJWT(uid, name);
-
   res.json({
     ok: true,
     uid: usuario.id,
