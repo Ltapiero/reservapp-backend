@@ -17,7 +17,7 @@ router.post(
   "/new",
   [
     check("name", "El nombre es obligatorio").not().isEmpty(),
-    check("email", "El email es obligatorio").isEmail(),
+    check("surnames", "El apellido es obligatorio").not().isEmpty(),
     check("password", "El password debe de tener mínimo 6 caracteres").isLength({ min: 6 }),
     validarCampos,
   ],
@@ -26,7 +26,7 @@ router.post(
 
 router.put("/", [
   check("name", "El nombre es obligatorio").not().isEmpty(),
-  check("password", "El password debe de tener mínimo 6 caracteres").isLength({ min: 6 }),
+  check("name", "El nombre es obligatorio").not().isEmpty(),
   validarCampos,
   validarJWT,
   editarUsuario,

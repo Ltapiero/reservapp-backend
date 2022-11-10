@@ -44,12 +44,13 @@ const crearUsuario = async (req, res = response) => {
 
 const editarUsuario = async (req, res = response) => {
   const usuarioId = req.body.uid;
+  const { password } = req.body;
   const uid = req.uid;
 
   console.log(req);
 
   try {
-    const usuario = await Usuario.findById(usuarioId);
+    let usuario = await Usuario.findById(usuarioId);
 
     if (!usuario) {
       res.status(404).json({
@@ -65,11 +66,31 @@ const editarUsuario = async (req, res = response) => {
       });
     }
 
-    const usuarioEditado = {
+    let usuarioUpdated = {
       ...req.body,
     };
 
-    const usuarioActualizado = await Usuario.findByIdAndUpdate(usuarioId, usuarioEditado, {
+    console.log(usuarioUpdated);
+
+    // let usuarioUpdated = {
+    //   name: req.body.name,
+    //   surnames: req.body.surnames,
+    //   gender: req.body.gender,
+    //   uid: req.body.uid,
+    // };
+
+    if (req.body.password !== "") {
+      const salt = bcrypt.genSaltSync();
+      usuarioUpdated.password = bcrypt.hashSync(password, salt);
+      console.log(usuarioUpdated);
+    } else {
+      delete usuarioUpdated.password;
+      delete usuarioUpdated.repeatPassword;
+    }
+
+    console.log(usuarioUpdated);
+
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(usuarioId, usuarioUpdated, {
       new: true,
     });
 
@@ -88,7 +109,6 @@ const editarUsuario = async (req, res = response) => {
 
 const loginUsuario = async (req, res = response) => {
   const { email, password } = req.body;
-  console.log(req);
 
   try {
     let usuario = await Usuario.findOne({ email });
